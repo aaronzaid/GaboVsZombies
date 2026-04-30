@@ -1,0 +1,88 @@
+body{
+  margin:0;
+  overflow:hidden;
+  font-family:Arial;
+  background:black;
+  color:white;
+}
+
+.card{
+  background:#111;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.panel{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.hidden{display:none;}
+
+#menu{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+button,input,select{
+  padding:10px;
+  margin:5px;
+}
+
+#hud{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+}
+
+#lifeBox{
+  width:200px;
+  height:20px;
+  border:2px solid white;
+}
+#lifeBar{
+  height:100%;
+  background:lime;
+}
+
+#crosshair{
+  position:absolute;
+  top:50%; left:50%;
+  width:10px; height:10px;
+  border:2px solid red;
+  transform:translate(-50%,-50%);
+}
+
+/* 📱 CONTROLES */
+#mobileControls{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  padding:20px;
+}
+
+#joystick{
+  width:90px;
+  height:90px;
+  background:rgba(255,255,255,0.2);
+  border-radius:50%;
+}
+
+#shootBtn{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:red;
+  color:white;
+  font-size:20px;
+}

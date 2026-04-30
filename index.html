@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>GABO VS LOS ZOMBIES</title>
+<link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+
+<div id="menu">
+  <h1>🧟 GABO VS LOS ZOMBIES</h1>
+
+  <div class="card">
+    <p>Sobrevive a hordas de zombies en la noche.</p>
+
+    <select id="character">
+      <option>GABO</option>
+      <option>ALAN</option>
+      <option>AARON</option>
+    </select>
+
+    <button onclick="showLogin()">INICIAR SESIÓN</button>
+    <button onclick="showRegister()">REGISTRARSE</button>
+  </div>
+</div>
+
+<div id="login" class="panel hidden">
+  <div class="card">
+    <input id="loginUser" placeholder="Usuario">
+    <input id="loginPass" type="password" placeholder="Contraseña">
+    <button onclick="login()">Entrar</button>
+    <button onclick="backMenu()">Volver</button>
+  </div>
+</div>
+
+<div id="register" class="panel hidden">
+  <div class="card">
+    <input id="regUser" placeholder="Usuario">
+    <input id="regPass" type="password" placeholder="Contraseña">
+    <button onclick="register()">Crear cuenta</button>
+    <button onclick="backMenu()">Volver</button>
+  </div>
+</div>
+
+<div id="intro" class="panel hidden">
+  <div class="card">
+    <p>PC: WASD moverte | Mouse mirar | Click disparar | Espacio saltar</p>
+    <p>Móvil: Joystick moverte | dedo mirar | botón disparar</p>
+    <button onclick="startGame()">JUGAR</button>
+  </div>
+</div>
+
+<div id="hud" class="hidden">
+  <div id="lifeBox"><div id="lifeBar"></div></div>
+  <div id="score"></div>
+</div>
+
+<div id="crosshair"></div>
+
+<div id="gameOver" class="hidden">
+  <div class="card">
+    <h1 id="gameOverText"></h1>
+    <button onclick="location.reload()">VOLVER</button>
+  </div>
+</div>
+
+<!-- 📱 CONTROLES -->
+<div id="mobileControls">
+  <div id="joystick"></div>
+  <button id="shootBtn">🔫</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
