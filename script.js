@@ -8,7 +8,6 @@ let running=false;
 let player="GABO";
 
 let velY=0,gravity=-0.01,canJump=true;
-
 let flashlight;
 
 let isMobile=/Android|iPhone/i.test(navigator.userAgent);
@@ -21,7 +20,7 @@ const introPanel=document.getElementById("intro");
 const hud=document.getElementById("hud");
 const gameOver=document.getElementById("gameOver");
 
-// UI funciones
+// UI control
 function hideAll(){
   menu.style.display="none";
   loginPanel.classList.add("hidden");
@@ -32,12 +31,35 @@ function showLogin(){hideAll();loginPanel.classList.remove("hidden");}
 function showRegister(){hideAll();registerPanel.classList.remove("hidden");}
 function backMenu(){hideAll();menu.style.display="flex";}
 
-// login
-function register(){localStorage.setItem(regUser.value,regPass.value);}
+// 🔐 REGISTRO
+function register(){
+  const user=document.getElementById("regUser").value.trim();
+  const pass=document.getElementById("regPass").value.trim();
+
+  if(user===""||pass==="") return alert("Completa campos");
+
+  if(localStorage.getItem("user_"+user)){
+    return alert("Usuario ya existe");
+  }
+
+  localStorage.setItem("user_"+user,pass);
+  alert("Cuenta creada");
+  backMenu();
+}
+
+// 🔐 LOGIN
 function login(){
-  if(localStorage.getItem(loginUser.value)===loginPass.value){
-    hideAll(); introPanel.classList.remove("hidden");
-  }else alert("Error");
+  const user=document.getElementById("loginUser").value.trim();
+  const pass=document.getElementById("loginPass").value.trim();
+
+  const saved=localStorage.getItem("user_"+user);
+
+  if(saved===null) return alert("Usuario no existe");
+  if(saved!==pass) return alert("Contraseña incorrecta");
+
+  alert("Bienvenido "+user);
+  hideAll();
+  introPanel.classList.remove("hidden");
 }
 
 // start
@@ -66,15 +88,14 @@ function init(){
   renderer.setSize(innerWidth,innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  // 🌙 iluminación
   scene.add(new THREE.AmbientLight(0x404070,2));
 
   let moon=new THREE.DirectionalLight(0x8899ff,2.5);
   moon.position.set(30,50,20);
   scene.add(moon);
 
-  // 🔦 linterna
-  flashlight=new THREE.SpotLight(0xffffff,6,100,Math.PI/6);
+  // linterna
+  flashlight=new THREE.SpotLight(0xffffff,6,100);
   camera.add(flashlight);
   camera.add(flashlight.target);
   scene.add(camera);
@@ -87,29 +108,17 @@ function init(){
   floor.rotation.x=-Math.PI/2;
   scene.add(floor);
 
-  // mapa
   for(let i=0;i<10;i++) createHouse();
   for(let i=0;i<20;i++) createTree();
   for(let i=0;i<6;i++) createLamp();
 
   setInterval(createZombie,1800);
 
-  // mouse
   document.addEventListener("mousemove",e=>{
     if(!isMobile && document.pointerLockElement){
       camera.rotation.y-=e.movementX*0.002;
     }
   });
-
-  // móvil mirar
-  if(isMobile){
-    let lastX=0;
-    window.addEventListener("touchmove",e=>{
-      let x=e.touches[0].clientX;
-      camera.rotation.y -= (x-lastX)*0.005;
-      lastX=x;
-    });
-  }
 
   document.addEventListener("keydown",e=>{
     keys[e.key.toLowerCase()]=true;
@@ -120,11 +129,9 @@ function init(){
 
     if(e.key==="f") flashlight.visible=!flashlight.visible;
 
-    // ❤️ curación
     if(e.key==="e" && heals>0){
       health=Math.min(maxHealth,health+40);
       heals--;
-      console.log("curas:",heals);
     }
   });
 
@@ -149,50 +156,42 @@ function move(){
   }
 }
 
-// 🏠 casas
+// estructuras
 function createHouse(){
-  let x=(Math.random()-0.5)*200;
-  let z=(Math.random()-0.5)*200;
-
   let base=new THREE.Mesh(
     new THREE.BoxGeometry(6,4,6),
     new THREE.MeshStandardMaterial({color:0x555})
   );
-  base.position.set(x,2,z);
+  base.position.set((Math.random()-0.5)*150,2,(Math.random()-0.5)*150);
 
   let roof=new THREE.Mesh(
     new THREE.ConeGeometry(5,2,4),
     new THREE.MeshStandardMaterial({color:0xaa0000})
   );
-  roof.position.set(x,5,z);
+  roof.position.set(base.position.x,5,base.position.z);
 
   scene.add(base,roof);
 }
 
-// 🌲 árboles
 function createTree(){
-  let x=(Math.random()-0.5)*200;
-  let z=(Math.random()-0.5)*200;
-
   let trunk=new THREE.Mesh(
     new THREE.CylinderGeometry(0.3,0.5,3),
     new THREE.MeshStandardMaterial({color:0x5a3d1c})
   );
-  trunk.position.set(x,1.5,z);
+  trunk.position.set((Math.random()-0.5)*150,1.5,(Math.random()-0.5)*150);
 
   let leaves=new THREE.Mesh(
     new THREE.SphereGeometry(2),
     new THREE.MeshStandardMaterial({color:0x0f5c0f})
   );
-  leaves.position.set(x,4,z);
+  leaves.position.set(trunk.position.x,4,trunk.position.z);
 
   scene.add(trunk,leaves);
 }
 
-// 💡 faroles
 function createLamp(){
-  let x=(Math.random()-0.5)*200;
-  let z=(Math.random()-0.5)*200;
+  let x=(Math.random()-0.5)*150;
+  let z=(Math.random()-0.5)*150;
 
   let pole=new THREE.Mesh(
     new THREE.CylinderGeometry(0.2,0.2,5),
@@ -206,7 +205,7 @@ function createLamp(){
   scene.add(pole,light);
 }
 
-// 🧟 zombie mejorado
+// zombies
 function createZombie(){
   let z=new THREE.Group();
 
@@ -262,7 +261,6 @@ function shoot(){
 function update(){
   move();
 
-  // salto
   velY+=gravity;
   camera.position.y+=velY;
 
@@ -272,7 +270,6 @@ function update(){
     canJump=true;
   }
 
-  // balas
   bullets.forEach((b,bi)=>{
     b.position.add(b.velocity);
 
@@ -290,10 +287,9 @@ function update(){
     });
   });
 
-  // zombies
   zombies.forEach(z=>{
     let dir=camera.position.clone().sub(z.position).normalize();
-    z.position.add(dir.multiplyScalar(0.04));
+    z.position.add(dir.multiplyScalar(0.20));
 
     if(z.position.distanceTo(camera.position)<1){
       health-=0.3;
