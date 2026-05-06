@@ -1,88 +1,158 @@
-body{
-  margin:0;
-  overflow:hidden;
-  font-family:Arial;
-  background:black;
-  color:white;
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: black;
+  color: white;
+  /* Evita selección de texto accidental en móviles */
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
 }
 
-.card{
-  background:#111;
-  padding:20px;
-  border-radius:10px;
-  text-align:center;
+/* Alerta para forzar orientación horizontal en móviles */
+#portraitWarning {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: #050510;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 22px;
+  padding: 20px;
 }
 
-.panel{
-  position:absolute;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+@media screen and (orientation: portrait) {
+  #portraitWarning { display: flex; }
+  #menu, #hud, #mobileControls { display: none !important; }
 }
 
-.hidden{display:none;}
-
-#menu{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+.card {
+  background: rgba(17, 17, 17, 0.85);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid #333;
+  box-shadow: 0 0 20px rgba(0,0,0,0.8);
 }
 
-button,input,select{
-  padding:10px;
-  margin:5px;
+.panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#hud{
-  position:absolute;
-  bottom:20px;
-  left:20px;
+.hidden { display: none !important; }
+
+#menu {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-#lifeBox{
-  width:220px;
-  height:20px;
-  border:2px solid white;
+button, input, select {
+  padding: 12px;
+  margin: 5px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-#lifeBar{
-  height:100%;
-  background:lime;
+button {
+  background: #444;
+  color: white;
+  transition: 0.2s;
 }
 
-#crosshair{
-  position:absolute;
-  top:50%; left:50%;
-  width:10px; height:10px;
-  border:2px solid red;
-  transform:translate(-50%,-50%);
+button:hover { background: #666; }
+
+#hud {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+#lifeBox {
+  width: 220px;
+  height: 20px;
+  border: 2px solid white;
+  background: rgba(0,0,0,0.5);
+}
+
+#lifeBar {
+  height: 100%;
+  background: lime;
+  transition: width 0.2s;
+}
+
+#crosshair {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 10px; height: 10px;
+  border: 2px solid red;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 /* móvil */
-#mobileControls{
-  position:absolute;
-  bottom:0;
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  padding:20px;
+#mobileControls {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Permite clics donde no hay botones */
+  z-index: 5;
 }
 
-#joystick{
-  width:90px;
-  height:90px;
-  background:rgba(255,255,255,0.2);
-  border-radius:50%;
+#joystickArea {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 130px;
+  height: 130px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: auto;
 }
 
-#shootBtn{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  background:red;
-  color:white;
+#joystickKnob {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#lookArea {
+  position: absolute;
+  top: 0; right: 0;
+  width: 50%; height: 100%;
+  pointer-events: auto;
+}
+
+#shootBtn {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 0, 0, 0.5);
+  border: 2px solid #ff4444;
+  color: white;
+  font-size: 30px;
+  pointer-events: auto;
+  margin: 0;
 }

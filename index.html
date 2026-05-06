@@ -2,11 +2,14 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GABO VS LOS ZOMBIES</title>
 <link rel="stylesheet" href="estilos.css">
 </head>
 
 <body>
+
+<div id="portraitWarning">⚠️ Gira tu celular en horizontal para jugar.</div>
 
 <div id="menu">
   <h1>🧟 GABO VS LOS ZOMBIES</h1>
@@ -44,8 +47,8 @@
 
 <div id="intro" class="panel hidden">
   <div class="card">
-    <p>PC: WASD | Mouse | Click | ESPACIO | F linterna | E curar</p>
-    <p>Móvil: Joystick | dedo | botón 🔫</p>
+    <p>💻 PC: WASD | Mouse | Click | ESPACIO | F linterna | E curar</p>
+    <p>📱 Móvil: Joystick izquierdo | Arrastrar mitad derecha | Botón 🔫</p>
     <button onclick="startGame()">JUGAR</button>
   </div>
 </div>
@@ -56,16 +59,17 @@
 
 <div id="crosshair"></div>
 
-<div id="gameOver" class="hidden">
+<div id="gameOver" class="hidden panel">
   <div class="card">
     <h1 id="gameOverText"></h1>
     <button onclick="location.reload()">VOLVER</button>
   </div>
 </div>
 
-<!-- móvil -->
-<div id="mobileControls">
-  <div id="joystick"></div>
+<!-- Controles mejorados para móvil -->
+<div id="mobileControls" class="hidden">
+  <div id="joystickArea"><div id="joystickKnob"></div></div>
+  <div id="lookArea"></div>
   <button id="shootBtn">🔫</button>
 </div>
 
